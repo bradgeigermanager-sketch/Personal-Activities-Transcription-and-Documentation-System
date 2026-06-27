@@ -1,0 +1,149 @@
+### Overview of a PATDS architecture
+
+A Personal Activities Transcription and Documentation System (PATDS) works best as a set of loosely coupled services around a central data layer. Think: one brain (data + intelligence) with multiple senses (capture) and hands (interfaces).
+
+---
+
+### High-level architecture layers
+
+1. **Capture layer (input)**
+2. **Processing layer (AI + transformation)**
+3. **Storage layer (data + indexes)**
+4. **Application layer (features + workflows)**
+5. **Interface layer (how you interact)**
+6. **Security & governance layer (cross-cutting)**
+
+---
+
+### 1. Capture layer
+
+- **Audio capture service:**  
+  **Role:** Records microphone input (mobile, desktop, wearable) and streams it to the processing layer.  
+  **Key pieces:**  
+  - **Buffering & streaming:** Handles live and offline recording.  
+  - **Metadata collector:** Device, location (optional), time, session ID.
+
+- **Event & activity logger:**  
+  **Role:** Logs non-audio events (calendar events, app usage, manual notes).  
+  - **Connectors:** Calendar, task manager, wearable APIs.  
+  - **Unified event schema:** Normalizes everything into a common “activity” format.
+
+---
+
+### 2. Processing layer (AI engine)
+
+- **ASR (Automatic Speech Recognition) service:**  
+  **Role:** Converts raw audio into text.  
+  - **Pipeline:** Audio → feature extraction → decoding → raw transcript.  
+  - **Config:** Language models, noise reduction, punctuation.
+
+- **Speaker diarization & segmentation service:**  
+  **Role:** Splits transcript into speaker segments and logical chunks.  
+  - **Output:** Transcript with speaker labels + timestamps.
+
+- **NLP enrichment service:**  
+  **Role:** Adds meaning to text.  
+  - **Functions:**  
+    - **Summarization:** Daily summaries, meeting notes.  
+    - **Action item extraction:** Tasks, deadlines, commitments.  
+    - **Entity & topic tagging:** People, places, projects, themes.  
+    - **Sentiment/tone (optional):** Emotional context.
+
+- **Document generator service:**  
+  **Role:** Turns enriched transcripts into structured documents.  
+  - **Templates:** Journals, reports, case notes, timelines.  
+  - **Versioning hooks:** Sends updates to storage with version metadata.
+
+---
+
+### 3. Storage layer
+
+- **Raw data store:**  
+  **Role:** Holds original audio and raw transcripts.  
+  - Could be **object storage** (audio) + **document store** (JSON transcripts).
+
+- **Processed data store:**  
+  **Role:** Stores enriched transcripts, summaries, action items, entities.  
+  - Typically a **document database** (e.g., JSON with tags, links).
+
+- **Index & search engine:**  
+  **Role:** Enables fast semantic and keyword search.  
+  - **Components:**  
+    - Text index (full-text search).  
+    - Vector index (semantic embeddings).  
+    - Filters (date, person, topic, location).
+
+- **Knowledge graph (optional but powerful):**  
+  **Role:** Represents relationships between activities, people, topics, and time.  
+  - Nodes: events, people, projects, places.  
+  - Edges: “attended”, “discussed”, “related to”, “follow-up on”.
+
+---
+
+### 4. Application layer (features)
+
+- **Activity timeline service:**  
+  **Role:** Builds chronological views from stored events and transcripts.  
+  - Daily, weekly, project-based timelines.
+
+- **Task & follow-up service:**  
+  **Role:** Manages extracted action items.  
+  - Integrations with task apps or internal lightweight task manager.
+
+- **Reporting & journaling service:**  
+  **Role:** Generates recurring documents (daily log, weekly review, monthly report).  
+  - Uses document generator + templates.
+
+- **Search & insights service:**  
+  **Role:** Provides queries like:  
+  - “What did I discuss with Alex last week?”  
+  - “Show all decisions about Project X.”  
+  - “Summarize my last 3 days.”
+
+---
+
+### 5. Interface layer
+
+- **Mobile app:**  
+  **Role:** Quick capture (voice, notes), timeline view, search, daily summary.  
+
+- **Desktop/web app:**  
+  **Role:** Deep search, document editing, configuration, analytics dashboards.  
+
+- **Voice interface:**  
+  **Role:** Hands-free commands: “Start recording”, “Summarize today”, “Find my last meeting with Sam.”
+
+- **API layer:**  
+  **Role:** Exposes core functionality to other apps or automations.  
+  - REST/GraphQL endpoints for search, documents, tasks, events.
+
+---
+
+### 6. Security & governance (cross-cutting)
+
+- **Authentication & authorization:**  
+  **Role:** Ensures only the user (and explicitly allowed apps) can access data.  
+
+- **Encryption:**  
+  - **At rest:** Encrypted storage for audio and transcripts.  
+  - **In transit:** TLS for all communication.
+
+- **Privacy controls:**  
+  - Recording consent toggles.  
+  - Per-session “do not store” modes.  
+  - Redaction tools for sensitive content.
+
+- **Audit & logs:**  
+  **Role:** Track access, changes, and data flows for transparency.
+
+---
+
+### Example data flow (end-to-end)
+
+1. **User says:** “Start recording” on mobile.  
+2. **Capture layer:** Audio stream + metadata → ASR service.  
+3. **ASR:** Produces raw transcript → diarization + NLP enrichment.  
+4. **NLP:** Adds speakers, tags, actions, summary → document generator.  
+5. **Storage:** Raw audio + transcript + enriched document saved; indexes updated.  
+6. **Application:** Timeline updated; tasks extracted; daily summary ready.  
+7. **Interface:** User opens app → sees “Today’s summary”, can search or edit.
