@@ -1,0 +1,143 @@
+PATDS
+
+# 🟦 Component #11 — Task & Follow‑Up Service  
+This service manages **all actionable items** extracted from transcripts, notes, calendar events, and user‑created tasks. It ensures PATDS doesn’t just *record your life* — it helps you *run your life*.
+This is where PATDS becomes *actionable*. Everything you’ve captured, transcribed, diarized, enriched, and indexed now turns into **real tasks**, **follow‑ups**, and **commitments** you can track and complete. This service is the bridge between *what happened* and *what needs to happen next*.
+
+---
+
+# 🧩 Subcomponents
+
+## 1. **Task Extraction Integration**  
+Tasks come from:
+
+- NLP Enrichment Service (Component #5)  
+- Manual notes  
+- Calendar events  
+- System events (“Follow up on this conversation”)  
+
+### Example extracted task  
+```json
+{
+  "description": "Send the proposal",
+  "due": "2026-06-27",
+  "source": "transcript:uuid",
+  "status": "open"
+}
+```
+
+---
+
+## 2. **Task Store**  
+A dedicated collection/table for tasks.
+
+### Fields  
+- `task_id`  
+- `user_id`  
+- `description`  
+- `due`  
+- `status` (open, done, snoozed)  
+- `source` (transcript, note, calendar)  
+- `created_at`  
+- `completed_at`  
+
+---
+
+## 3. **Task Normalization Engine**  
+Ensures tasks are clean and consistent.
+
+### Responsibilities  
+- Convert vague dates (“tomorrow”) into actual dates  
+- Remove duplicates  
+- Merge similar tasks  
+- Detect recurring tasks  
+
+---
+
+## 4. **Follow‑Up Detection**  
+PATDS identifies follow‑ups automatically.
+
+### Examples  
+- “Let’s check in next week” → follow‑up  
+- “I’ll send you the file later” → follow‑up  
+- “We should revisit this” → follow‑up  
+
+### Output  
+```json
+{
+  "follow_up": true,
+  "due": "2026-07-03",
+  "context": "Check in next week about project timeline"
+}
+```
+
+---
+
+## 5. **Task API**  
+### Endpoints  
+- `POST /task` — create task  
+- `GET /tasks?status=open`  
+- `GET /tasks?due=today`  
+- `PUT /task/:id` — update  
+- `DELETE /task/:id` — delete  
+
+---
+
+## 6. **Task Notifications (Optional)**  
+### MVP  
+- Daily digest of tasks due today  
+
+### Advanced  
+- Smart reminders based on:  
+  - Location  
+  - Time of day  
+  - Context (“You mentioned this earlier today…”)  
+
+---
+
+## 7. **Task UI**  
+### Mobile  
+- Task list  
+- Quick complete  
+- Swipe to snooze  
+
+### Web  
+- Kanban view  
+- Filters  
+- Task history  
+
+---
+
+## 8. **Integration with Timeline**  
+Tasks appear in the timeline at the moment they were spoken or created.
+
+---
+
+## 9. **Integration with Documents**  
+Daily summaries include:
+
+- Tasks created today  
+- Tasks completed today  
+- Overdue tasks  
+
+---
+
+# 🧱 Implementation Blueprint (MVP)
+
+### Backend  
+- Task service module  
+- Task normalization  
+- Follow‑up detection  
+- Task API  
+
+### Database  
+- `tasks` collection/table  
+- Indexes:  
+  - `user_id + status`  
+  - `due`  
+  - `source`  
+
+### Frontend  
+- Task list  
+- Task detail view  
+- Quick actions
