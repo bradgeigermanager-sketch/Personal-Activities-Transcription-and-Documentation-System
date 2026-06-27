@@ -1,0 +1,9 @@
+| Category | Key Features |
+| --- | --- |
+| **Capture** | Activity capture, audio recording, timestamping |
+| **Transcription** | Speech‑to‑text, diarization, noise filtering |
+| **Intelligence** | Summaries, action extraction, semantic tagging |
+| **Documentation** | Reports, timelines, archives, versioning |
+| **Search** | Semantic search, filters, cross‑linking |
+| **Security** | Encryption, permissions, redaction |
+| **Integrations** | Calendar, wearables, cloud sync |
