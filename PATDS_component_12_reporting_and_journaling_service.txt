@@ -1,0 +1,150 @@
+PATDS
+
+# 🟦 Component #12 — Reporting & Journaling Service  
+This is where PATDS becomes *reflective*. Up to now, your system has been capturing, transcribing, enriching, indexing, and organizing your life. PATDS begins **telling the story of your days, weeks, and months** — automatically.
+
+This service generates **daily summaries**, **weekly reviews**, **monthly reflections**, **meeting reports**, and **custom journals** using all the structured data PATDS looks through.
+This service transforms your structured data into **narratives**, **summaries**, and **reports** that help you understand your life at a glance.
+
+It’s the “reflection engine” of PATDS.
+
+---
+
+# 🧩 Subcomponents
+
+## 1. **Daily Summary Generator**  
+This is the most frequently used report.
+
+### Inputs  
+- Timeline entries  
+- Processed transcripts  
+- Tasks created/completed  
+- Topics & entities  
+- Sentiment (optional)
+
+### Output (Markdown or HTML)  
+```
+# Daily Summary — June 26, 2026
+
+## Overview
+You discussed project planning, scheduled a meeting with Alex, and created three new tasks.
+
+## Key Actions
+- Send the proposal (due tomorrow)
+- Schedule meeting with Alex (next week)
+
+## Conversations
+- 14:03 — Discussion about project timeline
+- 16:20 — Planning next week’s tasks
+
+## Notes
+- “Remember to send the proposal”
+```
+
+---
+
+## 2. **Weekly Review Generator**  
+### Highlights  
+- Top topics of the week  
+- People you interacted with most  
+- Tasks completed vs created  
+- Mood trends (if sentiment enabled)  
+- Most important conversations  
+
+---
+
+## 3. **Monthly Reflection Generator**  
+### Includes  
+- Major themes  
+- Accomplishments  
+- Challenges  
+- Recurring patterns  
+- Suggested goals for next month  
+
+---
+
+## 4. **Meeting Report Generator**  
+Triggered when a transcript is tagged as a meeting.
+
+### Output  
+- Attendees  
+- Agenda (inferred)  
+- Key decisions  
+- Action items  
+- Follow‑ups  
+- Summary  
+
+---
+
+## 5. **Custom Journaling Engine**  
+Allows the user to define templates like:
+
+- “Gratitude journal”  
+- “Work log”  
+- “Health log”  
+- “Daily reflection”  
+
+PATDS fills in the structured parts and leaves space for free‑text.
+
+---
+
+## 6. **Report Scheduler**  
+### MVP  
+- Generate daily summary at midnight  
+- Generate weekly review on Sunday  
+- Generate monthly reflection on the 1st  
+
+### Advanced  
+- User‑defined schedules  
+- Triggered reports (“After every meeting…”)  
+
+---
+
+## 7. **Report Storage**  
+Stored in the `documents` collection with type:
+
+- `daily_summary`  
+- `weekly_review`  
+- `monthly_reflection`  
+- `meeting_report`  
+- `custom_journal`  
+
+---
+
+## 8. **Report API**  
+### Endpoints  
+- `POST /report/generate?type=daily_summary&date=...`  
+- `GET /report/:id`  
+- `GET /reports?type=weekly_review`  
+
+---
+
+## 9. **UI Integration**  
+### Mobile  
+- “Today’s Summary” card  
+- Weekly review carousel  
+- Journaling prompts  
+
+### Web  
+- Full report viewer  
+- Export options  
+- Editing interface  
+
+---
+
+# 🧱 Implementation Blueprint (MVP)
+
+### Backend  
+- Reporting service  
+- Template selection  
+- Data aggregation  
+- LLM‑based narrative generation  
+
+### Database  
+- `documents` collection  
+- Index by `type`, `date`, `user_id`  
+
+### Frontend  
+- Report viewer  
+- Journaling editor  
+- History browser
