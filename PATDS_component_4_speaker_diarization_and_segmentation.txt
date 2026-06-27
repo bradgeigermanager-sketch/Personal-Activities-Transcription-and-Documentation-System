@@ -1,0 +1,96 @@
+PATDS
+
+## 🟦 Component #4 — Speaker Diarization + Segmentation
+
+### 🎯 Purpose  
+Identify **who is speaking when** and split the transcript into **logical segments** (utterances, topics, or turns). This makes conversations usable: you can see “you vs others,” meetings become structured, and downstream NLP (summaries, tasks) gets cleaner.
+
+---
+
+### 🧩 Subcomponents
+
+#### 1. Diarization engine
+- **Goal:** Assign speaker labels (`Speaker A`, `Speaker B`, etc.) to audio.
+- **Typical choice:** Pyannote or a cloud diarization API.
+- **Input:** Audio file or ASR segments with timestamps.
+- **Output example:**
+  ```json
+  [
+    { "speaker": "S1", "start": 0.0, "end": 5.2 },
+    { "speaker": "S2", "start": 5.2, "end": 11.0 }
+  ]
+  ```
+
+#### 2. Alignment with ASR transcript
+- **Goal:** Merge diarization segments with ASR text.
+- **Process:**
+  - For each ASR segment (`start`, `end`, `text`), find which diarization segment it falls into.
+  - Attach `speaker` to each text segment.
+
+- **Output example:**
+  ```json
+  [
+    {
+      "speaker": "S1",
+      "start": 0.0,
+      "end": 4.2,
+      "text": "Hey, remind me to send the proposal tomorrow."
+    },
+    {
+      "speaker": "S2",
+      "start": 4.2,
+      "end": 7.8,
+      "text": "Also, schedule a meeting with Alex next week."
+    }
+  ]
+  ```
+
+#### 3. Logical segmentation
+- **Goal:** Group segments into meaningful chunks:
+  - By **speaker turns**
+  - By **topic** (later via NLP)
+  - By **time gaps** (e.g., break if silence > X seconds)
+
+- **MVP:**  
+  - Segment by speaker turns only:
+    - Consecutive segments from same speaker → one block.
+
+#### 4. Diarization worker
+- **Goal:** Run asynchronously after ASR.
+- **Flow:**
+  1. Listen for `"transcript_ready"` event.
+  2. Fetch audio + transcript.
+  3. Run diarization.
+  4. Align and segment.
+  5. Store enriched transcript.
+  6. Emit `"diarization_complete"` event for NLP.
+
+#### 5. Storage format
+- **Stored in processed transcript record:**
+  ```json
+  {
+    "transcript_id": "uuid",
+    "audio_id": "uuid",
+    "segments": [
+      {
+        "speaker": "S1",
+        "start": 0.0,
+        "end": 4.2,
+        "text": "Hey, remind me to send the proposal tomorrow."
+      }
+    ]
+  }
+  ```
+
+#### 6. UI implications (later)
+- Show color‑coded speakers in conversation view.
+- Filter by “things *you* said” vs “others”.
+
+---
+
+## 🧱 Implementation Blueprint (MVP)
+
+- **Engine:** Pyannote or cloud diarization.
+- **Service:** Background worker subscribed to ASR completion events.
+- **Inputs:** `audio_id`, `transcript_id`.
+- **Outputs:** speaker‑labeled segments saved to the transcript record.
