@@ -1,0 +1,143 @@
+PATDS
+
+# 🟦 Component #6 — Document Generator  
+This is the module that turns enriched transcripts and activities into **clean, formatted documents** such as:
+
+- Daily logs  
+- Meeting notes  
+- Conversation summaries  
+- Weekly reviews  
+- Project reports  
+- Journaling entries  
+
+It’s the bridge between raw data and user‑facing output.
+
+---
+
+# 🧩 Subcomponents
+
+## 1. **Template Engine**  
+You need a flexible system for generating different document types.
+
+### MVP  
+- Use a template engine like Jinja2 or Mustache.  
+- Templates stored as text files with placeholders.
+
+### Example template  
+```
+# Daily Summary — {{ date }}
+
+## Overview
+{{ summary }}
+
+## Key Actions
+{% for action in actions %}
+- {{ action.description }} (due: {{ action.due }})
+{% endfor %}
+
+## Topics
+{{ topics | join(", ") }}
+```
+
+---
+
+## 2. **Document Types**  
+### MVP set  
+- **Daily Summary**  
+- **Conversation Summary**  
+- **Meeting Notes**  
+
+### Later  
+- Weekly review  
+- Monthly reflection  
+- Project‑specific reports  
+- Health/activity logs  
+
+---
+
+## 3. **Document Assembly Pipeline**  
+### Flow  
+1. Receive `"nlp_complete"` event  
+2. Fetch enriched transcript  
+3. Select appropriate template  
+4. Fill template with:  
+   - Summary  
+   - Actions  
+   - Entities  
+   - Topics  
+   - Sentiment  
+   - Speaker‑labeled segments  
+5. Generate final document (Markdown or HTML)  
+6. Save to Processed Data Store  
+7. Emit `"document_ready"` event  
+
+---
+
+## 4. **Document Storage Format**  
+Stored as structured JSON + rendered text.
+
+```json
+{
+  "document_id": "uuid",
+  "type": "daily_summary",
+  "user_id": "uuid",
+  "created_at": "2026-06-26T18:41:00Z",
+  "data": {
+    "summary": "...",
+    "actions": [...],
+    "topics": [...],
+    "entities": [...]
+  },
+  "rendered_markdown": "# Daily Summary..."
+}
+```
+
+---
+
+## 5. **Document Versioning**  
+### MVP  
+- Store each generated document as a new record.
+
+### Advanced  
+- Track edits  
+- Keep version history  
+- Allow rollback  
+
+---
+
+## 6. **Document API**  
+### Endpoints  
+- `POST /document/generate`  
+- `GET /document/:id`  
+- `GET /documents?type=daily_summary&date=YYYY-MM-DD`  
+- `PUT /document/:id` (for user edits)  
+
+---
+
+## 7. **UI Integration**  
+### MVP  
+- Show documents in a list  
+- Open document view  
+- Allow editing rendered text  
+
+### Later  
+- Export to PDF  
+- Share links  
+- Tag documents  
+
+---
+
+# 🧱 Implementation Blueprint (MVP)
+
+### Backend  
+- Template engine  
+- Document generation service  
+- Worker listening to NLP events  
+
+### Data  
+- `documents` collection/table  
+- Index by `user_id`, `type`, `date`  
+
+### Frontend  
+- Document viewer  
+- Editor for user modifications
