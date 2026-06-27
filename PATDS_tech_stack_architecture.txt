@@ -1,0 +1,143 @@
+A tech stack for a Personal Activities Transcription & Documentation System (PATDS)** needs to balance *speed*, *accuracy*, *privacy*, and *scalability*. Below is a complete, production‑grade stack—organized by layer—so you can mix, match, or swap components depending on your goals.
+
+---
+
+# ⚙️ PATDS Tech Stack (Full Architecture)
+
+
+
+
+
+---
+
+## 🟦 1. Capture Layer (Input)
+
+- **Audio Capture** —  
+  - Mobile: native iOS/Android audio APIs  
+  - Desktop: WebRTC or OS‑level audio capture  
+  - Wearables: Apple Watch, Pixel Watch, Garmin SDKs  
+
+- **Event Logging** —  
+  - Calendar APIs (Google Calendar, Outlook Graph API)  
+  - Device activity logs  
+  - Manual note capture via mobile/web UI  
+
+---
+
+## 🟩 2. Processing Layer (AI Engine)
+
+- **Speech‑to‑Text** —  
+  - Whisper (local or server)  
+  - Azure Speech Service  
+  - Vosk (offline, lightweight)  
+
+- **Speaker Diarization** —  
+  - Pyannote  
+  - Azure Conversation Transcription  
+
+- **NLP Enrichment** —  
+  - Summaries, action extraction, topic tagging  
+  - Transformers (BERT, T5, Llama‑based models)  
+  - spaCy for entity extraction  
+
+- **Document Generation** —  
+  - Template engines (Jinja2, Mustache)  
+  - LLM‑driven structured output  
+
+---
+
+## 🟧 3. Storage Layer (Data + Indexing)
+
+- **Raw Storage** —  
+  - Audio: S3, Azure Blob, or local encrypted storage  
+  - Transcripts: JSON in object storage or NoSQL  
+
+- **Processed Data Store** —  
+  - MongoDB  
+  - Firestore  
+  - Couchbase  
+
+- **Search & Semantic Index** —  
+  - Elasticsearch  
+  - OpenSearch  
+  - Weaviate / Pinecone (vector search)  
+
+- **Knowledge Graph** —  
+  - Neo4j  
+  - ArangoDB  
+  - RDF triple stores  
+
+---
+
+## 🟨 4. Application Layer (Features & Services)
+
+- **Timeline Service** —  
+  - Aggregates events + transcripts into chronological views  
+
+- **Task Extraction Service** —  
+  - Converts detected actions into tasks  
+  - Integrates with Todoist, Notion, Microsoft To Do  
+
+- **Reporting Engine** —  
+  - Daily summaries  
+  - Weekly reviews  
+  - Meeting notes  
+
+- **Search & Insights** —  
+  - Natural‑language queries  
+  - Topic clustering  
+  - Trend detection  
+
+---
+
+## 🟪 5. Interface Layer (User Interaction)
+
+- **Mobile App** —  
+  - Flutter (cross‑platform)  
+  - React Native  
+  - Native Swift/Kotlin  
+
+- **Web App** —  
+  - React / Next.js  
+  - SvelteKit  
+  - Vue 3  
+
+- **Voice Interface** —  
+  - Wake‑word detection  
+  - Local/offline command processing  
+
+- **API Layer** —  
+  - REST or GraphQL  
+  - FastAPI, Express, or NestJS  
+
+---
+
+## 🟥 6. Security & Privacy Layer
+
+- **Encryption** —  
+  - AES‑256 at rest  
+  - TLS 1.3 in transit  
+
+- **Identity & Access** —  
+  - OAuth2 / OpenID Connect  
+  - Auth0, Firebase Auth, or custom  
+
+- **Redaction Tools** —  
+  - NLP‑based PII detection  
+  - Rule‑based masking  
+
+---
+
+# 🧩 Recommended Minimal Viable Stack (MVP)
+
+If you want to build fast:
+
+- **Capture:** WebRTC + mobile app  
+- **Transcription:** Whisper (local or server)  
+- **NLP:** Lightweight transformer (T5‑small)  
+- **Storage:** MongoDB + S3  
+- **Search:** Elasticsearch  
+- **Frontend:** React + React Native  
+- **Security:** JWT + HTTPS  
+
+This gives the fully functional PATDS minimal complexity.
