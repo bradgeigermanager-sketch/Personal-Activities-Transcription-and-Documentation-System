@@ -1,0 +1,159 @@
+PATDS
+
+# 🟦 Component #17 — Auth & Identity  
+We’ve reached the **first module of the Security Layer**, and this one is foundational. Everything in PATDS — your recordings, transcripts, tasks, documents, insights — is deeply personal. Auth & Identity is the gatekeeper that ensures **only the right person** can access or modify that data.
+
+This component defines *who you are* in the system, *how you log in*, *how your sessions work*, and *how your identity ties into every record* across the entire architecture.
+
+---
+
+# 🧩 Subcomponents
+
+## 1. **Identity Model**  
+Every piece of data in PATDS is tied to a `user_id`.
+
+### Fields  
+- `user_id` (UUID)  
+- `email`  
+- `name`  
+- `created_at`  
+- `auth_provider` (email, Google, Microsoft, Apple)  
+- `settings` (privacy, retention, notifications)  
+
+Identity is the anchor for all storage layers.
+
+---
+
+## 2. **Authentication Providers**  
+### MVP  
+- Email + password  
+- Magic link login  
+
+### Recommended  
+- OAuth (Google, Microsoft, Apple)  
+- Passkeys (WebAuthn)  
+
+### Advanced  
+- Device‑bound tokens  
+- Multi‑factor authentication  
+
+---
+
+## 3. **Session Management**  
+### Requirements  
+- Short‑lived access tokens  
+- Long‑lived refresh tokens  
+- Automatic token rotation  
+- Device‑specific sessions  
+
+### Storage  
+- Secure HTTP‑only cookies (web)  
+- Encrypted secure storage (mobile)  
+
+---
+
+## 4. **Authorization Layer**  
+PATDS is single‑user, but authorization still matters.
+
+### Rules  
+- A user can only access their own data  
+- No cross‑user access  
+- No public endpoints  
+- All APIs require a valid session  
+
+### Optional  
+- Shared documents  
+- Delegated access  
+
+---
+
+## 5. **Device Identity**  
+Each device gets a unique ID.
+
+### Why  
+- Track active sessions  
+- Revoke compromised devices  
+- Enable device‑specific encryption keys  
+
+---
+
+## 6. **Biometric Integration**  
+### Mobile  
+- Face ID  
+- Touch ID  
+
+### Web  
+- Passkeys  
+- Windows Hello  
+
+Used for unlocking the app or confirming sensitive actions.
+
+---
+
+## 7. **Account Recovery**  
+### MVP  
+- Email recovery link  
+
+### Advanced  
+- Backup codes  
+- Trusted device recovery  
+- Passkey fallback  
+
+---
+
+## 8. **User Settings & Preferences**  
+Stored under the identity record.
+
+### Examples  
+- Data retention preferences  
+- Notification settings  
+- Model preferences  
+- Privacy mode  
+- Default document templates  
+
+---
+
+## 9. **Auth API**  
+### Endpoints  
+- `POST /auth/register`  
+- `POST /auth/login`  
+- `POST /auth/logout`  
+- `POST /auth/refresh`  
+- `GET /auth/me`  
+- `POST /auth/recover`  
+
+All other endpoints require a valid session.
+
+---
+
+## 10. **Security Requirements**  
+### Must‑haves  
+- Rate limiting  
+- Brute‑force protection  
+- Password hashing (Argon2 or bcrypt)  
+- Token signing (JWT or opaque tokens)  
+- HTTPS everywhere  
+
+### Should‑haves  
+- Suspicious login detection  
+- Device fingerprinting  
+
+---
+
+# 🧱 Implementation Blueprint (MVP)
+
+### Backend  
+- Auth service  
+- Token issuer  
+- Session store  
+- Identity model  
+
+### Mobile  
+- Secure token storage  
+- Biometric unlock  
+- Auto‑refresh tokens  
+
+### Web  
+- Secure cookies  
+- OAuth login  
+- Passkey support
