@@ -1,0 +1,193 @@
+PATDS - concrete components and what you’d implement for each, from MVP to more advanced.
+
+---
+
+## Capture layer components
+
+### Audio capture service
+- **Goal:** Record voice on demand and send it to the backend.
+- **MVP:**
+  - **Mobile:** Simple “Record” button using native iOS/Android or React Native audio APIs.
+  - **Web:** Use browser `MediaRecorder` (WebRTC) to capture microphone input.
+  - Upload audio files (e.g., `.wav` or `.m4a`) to backend via HTTPS.
+- **Next step:** Add streaming (chunked upload) so transcription can happen in near‑real time.
+
+### Activity/event logger
+- **Goal:** Capture non‑audio events (calendar, manual notes).
+- **MVP:**
+  - Simple “Add note” UI with timestamp.
+  - Basic calendar integration (Google Calendar API) to pull events.
+- **Next step:** Normalize everything into a common `Activity` schema (type, time, source, metadata).
+
+---
+
+## Processing layer components
+
+### ASR (speech‑to‑text) service
+- **Goal:** Turn audio into text.
+- **MVP:**
+  - Backend service (e.g., FastAPI/Node) that:
+    - Accepts audio upload.
+    - Calls Whisper (local or hosted) to generate a transcript.
+    - Stores transcript + timestamps.
+- **Next step:** Add language detection, noise reduction, and configurable models (fast vs accurate).
+
+### Speaker diarization & segmentation
+- **Goal:** Identify speakers and logical chunks.
+- **MVP:**
+  - For personal use, you can skip diarization initially—assume one speaker.
+- **Next step:**
+  - Integrate Pyannote or similar to:
+    - Label speakers.
+    - Split transcript into segments with start/end times.
+
+### NLP enrichment service
+- **Goal:** Add meaning: summaries, tasks, tags.
+- **MVP:**
+  - A service that:
+    - Takes transcript text.
+    - Uses an LLM or smaller model to:
+      - Generate a short summary.
+      - Extract action items (“do”, “schedule”, “send”, etc.).
+      - Tag topics (work, health, relationships, etc.).
+- **Next step:** Standardize outputs into JSON (e.g., `summary`, `actions[]`, `entities[]`, `topics[]`).
+
+### Document generator
+- **Goal:** Turn enriched data into human‑readable documents.
+- **MVP:**
+  - Use templates (Jinja2/Mustache) to render:
+    - Daily log.
+    - Meeting note.
+    - “Conversation summary” page.
+- **Next step:** Add versioning and allow user edits that are stored back into the system.
+
+---
+
+## Storage layer components
+
+### Raw data store
+- **Goal:** Keep original audio + raw transcripts.
+- **MVP:**
+  - Audio in object storage (S3/local).
+  - Raw transcripts in a `transcripts` collection/table with:
+    - `id`, `user_id`, `created_at`, `audio_url`, `raw_text`.
+- **Next step:** Add retention policies (e.g., auto‑delete raw audio after X days if user wants).
+
+### Processed data store
+- **Goal:** Store enriched, structured data.
+- **MVP:**
+  - `activities` collection:
+    - `id`, `user_id`, `timestamp`, `type` (audio, note, calendar), `summary`, `actions[]`, `topics[]`, `entities[]`.
+- **Next step:** Add links between activities (e.g., `related_to` IDs) to start forming a graph.
+
+### Search & index
+- **Goal:** Let the user ask “What did I do/talk about?” and actually find it.
+- **MVP:**
+  - Full‑text search index (Elasticsearch/OpenSearch) on:
+    - Transcript text.
+    - Summaries.
+    - Notes.
+- **Next step:** Add semantic search (vector embeddings) for natural‑language queries like “Show all conversations about burnout”.
+
+---
+
+## Application layer components
+
+### Activity timeline service
+- **Goal:** Show “what happened when”.
+- **MVP:**
+  - Backend endpoint: `GET /timeline?date=YYYY-MM-DD`
+    - Returns ordered list of activities (audio sessions, notes, events) with summaries.
+- **Next step:** Filters by topic, person, location; weekly/monthly views.
+
+### Task & follow‑up service
+- **Goal:** Turn extracted actions into usable tasks.
+- **MVP:**
+  - `tasks` collection:
+    - `id`, `source_activity_id`, `description`, `status`, `due_date?`.
+  - Simple UI to mark tasks done.
+- **Next step:** Integrate with external task managers (Todoist, Notion, etc.).
+
+### Reporting & journaling service
+- **Goal:** Auto‑generate recurring documents.
+- **MVP:**
+  - Daily summary endpoint:
+    - Aggregates all activities for the day.
+    - Uses NLP to produce “Today you…” narrative + key actions.
+- **Next step:** Weekly review, monthly reflection, project‑specific reports.
+
+### Search & insights service
+- **Goal:** Answer “What have I been doing with my life?” in a structured way.
+- **MVP:**
+  - Search endpoint:
+    - `q` (query string).
+    - Returns matching activities + snippets.
+- **Next step:** Insights:
+  - Most frequent topics.
+  - People you interact with most.
+  - Recurring tasks you never complete.
+
+---
+
+## Interface layer components
+
+### Mobile app
+- **Goal:** Make capture and review effortless.
+- **MVP:**
+  - Screens:
+    - Record screen (start/stop, upload).
+    - Today screen (timeline + summary).
+    - Tasks screen.
+- **Next step:** Offline mode, push notifications (“Your daily summary is ready”).
+
+### Web/desktop app
+- **Goal:** Deep search and editing.
+- **MVP:**
+  - Timeline view.
+  - Search bar.
+  - Document view (edit summaries, notes).
+- **Next step:** Analytics dashboards (topics over time, mood trends if you add sentiment).
+
+### Voice interface
+- **Goal:** Hands‑free control.
+- **MVP:**
+  - Simple commands inside mobile app:
+    - “Start recording.”
+    - “Stop recording.”
+- **Next step:** Natural‑language commands:
+  - “Summarize today.”
+  - “Show my last meeting with Alex.”
+
+---
+
+## Security & privacy components
+
+### Auth & identity
+- **Goal:** Make sure it’s truly *personal*.
+- **MVP:**
+  - Email/password or OAuth login.
+  - JWT for session tokens.
+- **Next step:** Device‑level encryption keys, multi‑factor auth.
+
+### Encryption & redaction
+- **Goal:** Protect sensitive content.
+- **MVP:**
+  - HTTPS everywhere.
+  - Encrypted storage for audio and transcripts.
+- **Next step:**
+  - PII detection (names, addresses) with optional redaction.
+  - “Private mode” sessions that don’t get stored, only summarized.
+
+---
+
+## A a build order roadmap
+
+1. **Audio capture + upload**  
+2. **ASR service + raw transcript storage**  
+3. **NLP enrichment (summary + actions)**  
+4. **Timeline view (web or mobile)**  
+5. **Task list from actions**  
+6. **Daily summary generator**  
+7. **Search over transcripts and summaries**  
+
+PATDS -your life, transcribed and structured.
