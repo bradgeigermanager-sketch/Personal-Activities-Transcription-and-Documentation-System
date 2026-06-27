@@ -1,0 +1,166 @@
+PATDS
+
+# 🟦 Component #14 — Mobile App  
+The Mobile App, the first module of the Interface Layer. This is where PATDS becomes something you can *carry*, *use instantly*, and *live inside of*. The mobile app is the user’s primary gateway into the system, so we design it to be fast, intuitive, and deeply integrated with the pipeline.
+The PATDS mobile app has three core responsibilities:
+
+1. **Capture** — audio, notes, tasks, quick events  
+2. **Review** — timeline, documents, tasks, insights  
+3. **Control** — trigger summaries, search, voice commands  
+
+Everything else is optional polish.
+
+---
+
+# 🧩 Subcomponents
+
+## 1. **App Architecture**  
+Choose a cross‑platform or native approach.
+
+### Recommended  
+- **Flutter** — best balance of speed, UI quality, and dev velocity  
+- **React Native** — great if your backend is JS/TS  
+- **Native Swift/Kotlin** — best performance, more work  
+
+### Core modules  
+- Audio recorder  
+- Timeline viewer  
+- Task manager  
+- Document viewer  
+- Search interface  
+- Settings & privacy  
+
+---
+
+## 2. **Audio Capture Module**  
+This connects directly to Component #1.
+
+### Features  
+- Start/stop recording  
+- Waveform visualization  
+- Background recording  
+- Auto‑upload on stop  
+- Offline mode (queue uploads)  
+
+### Implementation  
+- Flutter: `flutter_sound`  
+- React Native: `react-native-audio-recorder-player`  
+- Native: AVAudioRecorder / MediaRecorder  
+
+---
+
+## 3. **Timeline Viewer**  
+Connects to Component #10.
+
+### Features  
+- Scrollable daily timeline  
+- Cards for:  
+  - Audio sessions  
+  - Notes  
+  - Tasks  
+  - Calendar events  
+  - Documents  
+- Tap to expand  
+- Jump to date  
+
+---
+
+## 4. **Task Manager**  
+Connects to Component #11.
+
+### Features  
+- List of open tasks  
+- Quick complete  
+- Snooze  
+- Add new task  
+- Link back to source transcript  
+
+---
+
+## 5. **Document Viewer**  
+Connects to Component #12.
+
+### Features  
+- Daily summaries  
+- Weekly reviews  
+- Meeting notes  
+- Markdown rendering  
+- Edit mode  
+
+---
+
+## 6. **Search Interface**  
+Connects to Component #13.
+
+### Features  
+- Search bar  
+- Natural‑language queries  
+- Filters (type, date, topic, person)  
+- Semantic result previews  
+- Jump to timeline entry  
+
+---
+
+## 7. **Voice Command Layer**  
+Optional but powerful.
+
+### Commands  
+- “Start recording”  
+- “Summarize today”  
+- “Show tasks”  
+- “Search for conversations about Alex”  
+
+---
+
+## 8. **Offline Mode**  
+### Store locally  
+- Audio  
+- Notes  
+- Tasks  
+- Pending uploads  
+
+Sync when online.
+
+---
+
+## 9. **Authentication & Privacy**  
+### Features  
+- Login (OAuth or email)  
+- Biometric lock  
+- Local encryption for cached data  
+- “Private session” mode (no storage)  
+
+---
+
+## 10. **Mobile App API Integration**  
+The app communicates with:
+
+- Audio upload endpoint  
+- Activity logger  
+- Timeline API  
+- Task API  
+- Document API  
+- Search API  
+- Insights API  
+
+All endpoints already defined in earlier components.
+
+---
+
+# 🧱 Implementation Blueprint (MVP)
+
+### Screens  
+- Home (timeline)  
+- Record  
+- Tasks  
+- Documents  
+- Search  
+- Settings  
+
+### Local storage  
+- SQLite or Hive (Flutter)  
+- AsyncStorage (React Native)  
+
+### Navigation  
+- Bottom tab bar  
+- Stack navigation for detail screens
