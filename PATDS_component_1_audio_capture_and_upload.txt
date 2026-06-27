@@ -1,0 +1,67 @@
+# 🔷 Component #1: Audio Capture + Upload  
+
+## 🎯 Goal  
+Record audio on mobile or web, package it cleanly, and send it to the backend for transcription.
+
+---
+
+## 🧩 Subcomponents
+
+### **1. Recording Interface**
+- Mobile: native iOS/Android or React Native audio APIs  
+- Web: `MediaRecorder` via WebRTC  
+- Requirements:  
+  - Start/stop recording  
+  - Show recording duration  
+  - Save as `.wav` or `.m4a`  
+
+### **2. Audio Packaging**
+- Normalize sample rate (16 kHz recommended for ASR)  
+- Convert to mono  
+- Compress if needed (AAC or Opus)  
+
+### **3. Upload Pipeline**
+- Chunked upload (optional for long recordings)  
+- Metadata included:  
+  - `user_id`  
+  - `timestamp`  
+  - `device`  
+  - `session_id`  
+
+### **4. Backend Endpoint**
+- `POST /audio/upload`  
+- Validates file  
+- Stores audio in object storage  
+- Returns `audio_id` for downstream processing  
+
+---
+
+## 🛠️ Suggested Tech Choices
+
+### **Mobile**
+- React Native + `react-native-audio-recorder-player`  
+- Or native Swift/Kotlin for tighter control  
+
+### **Web**
+- WebRTC `MediaRecorder` API  
+- Fallback to `<input type="file">` for older browsers  
+
+### **Backend**
+- FastAPI or Node (Express/Nest)  
+- Storage: S3, MinIO, or local encrypted storage  
+
+---
+
+## 📦 Data Model (MVP)
+
+```json
+{
+  "audio_id": "uuid",
+  "user_id": "uuid",
+  "created_at": "2026-06-26T18:28:00Z",
+  "duration_seconds": 42,
+  "file_url": "s3://bucket/audio123.m4a",
+  "device": "iPhone15,3",
+  "session_id": "uuid"
+}
+```
