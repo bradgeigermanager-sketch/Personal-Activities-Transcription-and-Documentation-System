@@ -1,0 +1,8 @@
+{
+  "audio_id": "uuid",
+  "segments": [
+    { "speaker": "S1", "start": 0.0, "end": 3.2 },
+    { "speaker": "S2", "start": 3.2, "end": 7.9 },
+    { "speaker": "S1", "start": 7.9, "end": 12.4 }
+  ]
+}
