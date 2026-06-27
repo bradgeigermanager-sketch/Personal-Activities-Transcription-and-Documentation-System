@@ -1,0 +1,27 @@
+frontend-mobile/
+  lib/
+    main.dart
+    core/
+      api_client.dart
+      auth_manager.dart
+      storage.dart
+    features/
+      auth/
+      record/
+      timeline/
+      tasks/
+      documents/
+      search/
+      insights/
+      voice/
+      settings/
+    widgets/
+      timeline_card.dart
+      task_tile.dart
+      document_viewer.dart
+      search_bar.dart
+      voice_button.dart
+  assets/
+  android/
+  ios/
+  pubspec.yaml
