@@ -1,0 +1,131 @@
+# ✅ PATDS
+
+# 🟦 Component #10 — Timeline Service  
+The Timeline Service is the **central view** of PATDS. It shows everything that happened in a day, week, or month — audio recordings, transcripts, notes, tasks, calendar events, documents, and system events — all in chronological order.
+*Usable as a daily life browser*- The Timeline Service is the UI‑facing backbone that merges **audio transcripts**, **activities**, **documents**, and **tasks** into a single chronological stream.
+
+Think of it as your **personal activity feed**, but powered by AI and structured data.
+It is the user’s **primary interface** for reviewing their life.
+
+---
+
+# 🧩 Subcomponents
+
+## 1. **Timeline Aggregator**  
+This service pulls data from:
+
+- Processed transcripts  
+- Processed activities  
+- Documents  
+- Tasks  
+- System events  
+
+### Aggregation logic  
+1. Fetch all items for a given date range  
+2. Normalize into a unified timeline entry format  
+3. Sort by timestamp  
+4. Apply grouping rules (optional)  
+
+### Unified timeline entry format  
+```json
+{
+  "timestamp": "2026-06-26T14:00:00Z",
+  "type": "transcript | note | task | calendar | document | system",
+  "summary": "Meeting with Alex about project timeline",
+  "details": { ... },
+  "source_id": "uuid"
+}
+```
+
+---
+
+## 2. **Timeline API**  
+### Endpoints  
+- `GET /timeline?date=YYYY-MM-DD`  
+- `GET /timeline?start=...&end=...`  
+- `GET /timeline/item/:id`  
+
+### Filters  
+- `type=transcript|note|task|document`  
+- `topic=work`  
+- `entity=Alex`  
+
+---
+
+## 3. **Timeline Grouping Rules**  
+### MVP  
+- Group by hour  
+- Group by activity type  
+
+### Advanced  
+- Group by topic  
+- Group by conversation  
+- Group by location  
+
+---
+
+## 4. **Timeline Rendering Engine**  
+This powers the UI.
+
+### MVP  
+- Vertical chronological list  
+- Each entry shows:  
+  - Time  
+  - Summary  
+  - Icon for type  
+  - Tap/click to expand  
+
+### Advanced  
+- Collapsible sections  
+- Color‑coded speakers  
+- Inline audio playback  
+- Inline transcript preview  
+
+---
+
+## 5. **Integration with Search**  
+Search results can link directly to timeline entries.
+
+Example:  
+User searches “proposal” → result links to timeline entry at 14:03.
+
+---
+
+## 6. **Integration with Documents**  
+Daily summaries appear as timeline entries at the end of each day.
+
+---
+
+## 7. **Integration with Tasks**  
+Tasks extracted from transcripts appear at the moment they were spoken.
+
+---
+
+## 8. **UI Components**  
+### Mobile  
+- Scrollable timeline  
+- Expandable cards  
+- Quick filters  
+
+### Web  
+- Multi‑day view  
+- Hover previews  
+- Keyboard navigation  
+
+---
+
+# 🧱 Implementation Blueprint (MVP)
+
+### Backend  
+- Timeline service module  
+- Aggregation logic  
+- Timeline API  
+
+### Database  
+- Query processed data store  
+- Sort + merge in memory or via aggregation pipeline  
+
+### Frontend  
+- Timeline view  
+- Entry cards  
+- Filters
