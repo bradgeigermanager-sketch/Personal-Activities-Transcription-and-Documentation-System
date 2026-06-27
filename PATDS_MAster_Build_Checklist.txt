@@ -1,0 +1,137 @@
+PATDS Master Build Checklist (All Components, All Subsystems)
+
+---
+
+# **PHASE 1 — Capture Layer**
+
+### 🎤 Audio Capture & Upload
+- **Audio Recorder**  
+- **Audio Upload Pipeline**  
+- **Audio Metadata Extraction**  
+
+### 📝 Activity Logger
+- **Quick Notes Capture**  
+- **Event Logging**  
+- **Calendar Activity Capture**  
+
+---
+
+# **PHASE 2 — Processing Layer**
+
+### 🎧 ASR (Speech‑to‑Text)
+- **ASR Worker**  
+- **ASR Model Integration**  
+- **ASR Output Normalization**  
+
+### 🗣 Speaker Diarization
+- **Diarization Worker**  
+- **Speaker Segmentation**  
+- **Turn‑Taking Reconstruction**  
+
+### 🧠 NLP Enrichment
+- **Summarization Engine**  
+- **Action Item Extraction**  
+- **Entity Extraction**  
+- **Topic Tagging**  
+- **Sentiment Analysis**  
+- **Highlight Extraction**  
+- **NLP Pipeline Orchestrator**  
+
+### 📄 Document Generator
+- **Template Engine**  
+- **Document Assembly Pipeline**  
+- **Document Versioning**  
+
+---
+
+# **PHASE 3 — Storage Layer**
+
+### 📦 Raw Data Store
+- **Audio Storage**  
+- **Raw Transcript Storage**  
+- **Raw Activity Storage**  
+- **Metadata Index**  
+
+### 🗃 Processed Data Store
+- **Processed Transcript Storage**  
+- **Processed Activity Storage**  
+- **Document Storage**  
+- **Task Store**  
+- **Knowledge Graph Layer**  
+
+### 🔍 Search + Semantic Index
+- **Full‑Text Index**  
+- **Vector Index**  
+- **Hybrid Search Engine**  
+- **Indexing Pipeline**  
+- **Search API**  
+
+---
+
+# **PHASE 4 — Application Layer**
+
+### 🕒 Timeline Service
+- **Timeline Aggregator**  
+- **Timeline API**  
+- **Timeline Renderer**  
+
+### ✔ Task & Follow‑Up Service
+- **Task Normalization Engine**  
+- **Follow‑Up Detection**  
+- **Task API**  
+
+### 📘 Reporting & Journaling
+- **Daily Summary Generator**  
+- **Weekly Review Generator**  
+- **Monthly Reflection Generator**  
+- **Meeting Report Generator**  
+
+### 🔎 Search & Insights
+- **Natural‑Language Query Engine**  
+- **Insight Generators**  
+- **Insights API**  
+- **Insight Renderer**  
+
+---
+
+# **PHASE 5 — Interface Layer**
+
+### 📱 Mobile App
+- **Mobile Architecture**  
+- **Audio Capture Module**  
+- **Timeline View**  
+- **Task Manager**  
+- **Document Viewer**  
+- **Search Interface**  
+- **Voice Commands**  
+
+### 💻 Web App
+- **Web Architecture**  
+- **Timeline Dashboard**  
+- **Advanced Search**  
+- **Document Workspace**  
+- **Task Console**  
+- **Insights Dashboard**  
+
+### 🎙 Voice Interface
+- **Voice Activation**  
+- **Real‑Time ASR Stream**  
+- **Voice Command Interpreter**  
+- **Voice Response Generator**  
+
+---
+
+# **PHASE 6 — Security Layer**
+
+### 🔐 Auth & Identity
+- **Identity Model**  
+- **Authentication Providers**  
+- **Session Management**  
+- **Authorization Layer**  
+
+### 🛡 Encryption & Redaction
+- **Data‑at‑Rest Encryption**  
+- **Data‑in‑Transit Encryption**  
+- **Field‑Level Encryption**  
+- **Redaction Engine**  
+- **Secure Deletion**
