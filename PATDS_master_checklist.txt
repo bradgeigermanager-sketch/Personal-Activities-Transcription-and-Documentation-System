@@ -1,0 +1,39 @@
+PATDS
+
+**Master Checklist**
+
+---
+
+# ✅ PATDS Build Checklist (Live)
+
+### **Phase 1 — Capture Layer**
+- [ ] **Audio Capture + Upload**  
+- [ ] **Activity/Event Logger**  
+
+### **Phase 2 — Processing Layer**
+- [ ] **ASR (Speech‑to‑Text) Service**  
+- [ ] **Speaker Diarization + Segmentation**  
+- [ ] **NLP Enrichment Service**  
+- [ ] **Document Generator**  
+
+### **Phase 3 — Storage Layer**
+- [ ] **Raw Data Store**  
+- [ ] **Processed Data Store**  
+- [ ] **Search + Semantic Index**  
+
+### **Phase 4 — Application Layer**
+- [ ] **Timeline Service**  
+- [ ] **Task & Follow‑Up Service**  
+- [ ] **Reporting & Journaling Service**  
+- [ ] **Search & Insights Service**  
+
+### **Phase 5 — Interface Layer**
+- [ ] **Mobile App**  
+- [ ] **Web App**  
+- [ ] **Voice Interface**  
+
+### **Phase 6 — Security Layer**
+- [ ] **Auth & Identity**  
+- [ ] **Encryption & Redaction**  
+
+---
