@@ -1,0 +1,168 @@
+PATDS
+
+# 🟦 Component #13 — Search & Insights Service
+This is the **final part of the Application Layer**, and it’s where PATDS becomes *self‑aware*. Everything — transcripts, activities, documents, tasks, embeddings, indexes — now feeds into a system that can answer questions, surface patterns, and reveal insights about your life.
+
+This is the moment PATDS stops being a passive recorder and becomes an **active intelligence layer**.
+This service sits on top of your **hybrid search engine** and **processed data store** to deliver:
+
+- Natural‑language answers  
+- Behavioral insights  
+- Trends over time  
+- Topic/person analytics  
+- Task patterns  
+- Mood or sentiment trends  
+- “What changed since last week?”  
+- “What should I pay attention to?”  
+
+It’s the **intelligence dashboard** of PATDS.
+
+---
+
+# 🧩 Subcomponents
+
+## 1. **Natural‑Language Query Engine**  
+This layer interprets user questions and turns them into structured search operations.
+
+### Examples  
+User asks:  
+> “What did I talk about with Alex last week”
+
+Engine converts to:  
+- Filter: `entity = Alex`  
+- Date range: last 7 days  
+- Sort: chronological  
+- Return: transcript segments + summaries  
+
+### Capabilities  
+- Intent detection  
+- Entity extraction  
+- Date range parsing  
+- Query rewriting  
+- Hybrid search orchestration  
+
+---
+
+## 2. **Insight Generators**  
+These are specialized modules that compute patterns and trends.
+
+### Types of insights  
+- **Topic trends**  
+  - “You talked about *planning* 4× more this week.”  
+- **People insights**  
+  - “Most interactions this month were with Alex.”  
+- **Task insights**  
+  - “You completed 60% of tasks created this week.”  
+- **Sentiment insights**  
+  - “Your tone was more stressed on Tuesday.”  
+- **Time‑use insights**  
+  - “Most conversations happen between 2–4 PM.”  
+
+---
+
+## 3. **Insight Types**  
+### MVP  
+- Top topics  
+- Top entities  
+- Task completion stats  
+- Conversation frequency  
+- Daily/weekly highlights  
+
+### Advanced  
+- Behavioral patterns  
+- Predictive insights  
+- Suggested follow‑ups  
+- Suggested goals  
+- “Life themes” clustering  
+
+---
+
+## 4. **Insight API**  
+### Endpoints  
+- `GET /insights/daily?date=YYYY-MM-DD`  
+- `GET /insights/weekly`  
+- `GET /insights/topics?range=30d`  
+- `GET /insights/people?range=7d`  
+- `GET /insights/tasks`  
+- `POST /insights/query` (natural‑language)  
+
+### Example response  
+```json
+{
+  "top_topics": ["planning", "work"],
+  "most_discussed_person": "Alex",
+  "tasks_completed": 5,
+  "tasks_created": 7,
+  "sentiment_trend": "slightly positive"
+}
+```
+
+---
+
+## 5. **Insight Renderer**  
+Turns raw insight data into human‑readable summaries.
+
+### Example  
+```
+This week, you focused heavily on planning and project work.  
+You interacted most with Alex, primarily about scheduling and deadlines.  
+You created 7 tasks and completed 5.  
+Your overall tone was slightly positive, with a dip on Wednesday.
+```
+
+---
+
+## 6. **Visualization Layer**  
+### MVP  
+- Bar charts for topics  
+- Line charts for sentiment  
+- Pie charts for task categories  
+
+### Advanced  
+- Conversation timelines  
+- Topic clusters  
+- Social graphs  
+
+---
+
+## 7. **UI Integration**  
+### Mobile  
+- “Today’s Insights” card  
+- Weekly trends  
+- Quick answers  
+
+### Web  
+- Full analytics dashboard  
+- Interactive charts  
+- Query box (“Ask anything…”)  
+
+---
+
+## 8. **Integration with Search**  
+Insights can be triggered by search queries.
+
+Example:  
+User searches “proposal” → system shows:  
+- All mentions  
+- Related tasks  
+- People involved  
+- Topic trends  
+
+---
+
+# 🧱 Implementation Blueprint (MVP)
+
+### Backend  
+- Query interpreter  
+- Insight calculators  
+- Search orchestrator  
+- Insight API  
+
+### Database  
+- Uses processed data store  
+- Uses vector + keyword indexes  
+
+### Frontend  
+- Insights dashboard  
+- Query bar  
+- Visualizations
