@@ -1,0 +1,204 @@
+PATDS
+
+
+# 🟦 Component #2 — Activity/Event Logger  
+A PATDS needs to capture *non‑audio* events with the same precision as audio recordings. This component becomes the backbone of your **daily timeline**, **journaling**, **search**, and **insights** layers.
+
+Below is the full build: data model, API, UI, logic, and integration points.
+
+---
+
+# 🎯 Purpose  
+The Activity Logger captures **any personal activity that is not audio**, such as:
+
+- Manual notes  
+- Calendar events  
+- Tasks created by the user  
+- App interactions  
+- Location‑based events (optional)  
+- System‑generated events (e.g., “Daily summary created”)  
+
+This ensures your PATDS timeline is complete even when you’re not recording audio.
+
+---
+
+# 🧩 Subcomponents
+
+## 1. **Unified Activity Schema**  
+Everything logs into a single, normalized structure.
+
+```json
+{
+  "activity_id": "uuid",
+  "user_id": "uuid",
+  "timestamp": "2026-06-26T18:35:00Z",
+  "type": "note | calendar | task | system | location | custom",
+  "source": "mobile | web | calendar | system",
+  "content": {
+    "text": "Met with Alex to discuss project timeline",
+    "metadata": {
+      "location": "Office",
+      "calendar_event_id": "abc123",
+      "tags": ["work", "meeting"]
+    }
+  }
+}
+```
+
+This schema is intentionally flexible — it can store anything from a one‑line note to a full structured event.
+
+---
+
+## 2. **Manual Note Capture**  
+This is the simplest and most frequently used part of the logger.
+
+### UI requirements  
+- Text box  
+- Timestamp auto‑generated  
+- Optional: tags, location, attachments  
+
+### Backend endpoint  
+`POST /activity/note`
+
+### Example payload  
+```json
+{
+  "type": "note",
+  "content": { "text": "Remember to send the proposal" }
+}
+```
+
+---
+
+## 3. **Calendar Integration**  
+Calendar events are a goldmine for context.
+
+### MVP  
+- Pull events from Google Calendar or Outlook Graph API  
+- Convert each event into an Activity entry  
+- Store:  
+  - Title  
+  - Start/end time  
+  - Attendees  
+  - Description  
+
+### Example conversion  
+Calendar event → Activity:
+
+```json
+{
+  "type": "calendar",
+  "timestamp": "2026-06-26T14:00:00Z",
+  "content": {
+    "text": "Team sync",
+    "metadata": {
+      "attendees": ["Alex", "Jordan"],
+      "duration": 30
+    }
+  }
+}
+```
+
+---
+
+## 4. **Task Logging**  
+Tasks can be user‑created or extracted by NLP later.
+
+### MVP  
+- Simple “Add Task” UI  
+- Fields: description, optional due date  
+- Stored as an Activity with type `"task"`
+
+### Example  
+```json
+{
+  "type": "task",
+  "content": {
+    "text": "Prepare slides for Monday",
+    "metadata": { "due": "2026-06-29" }
+  }
+}
+```
+
+---
+
+## 5. **Location Events (Optional)**  
+Useful for journaling and context.
+
+### MVP  
+- Only log when user explicitly adds location  
+- No background tracking (privacy‑first)
+
+---
+
+## 6. **System Events**  
+PATDS itself generates events:
+
+- “Daily summary created”  
+- “Audio transcript processed”  
+- “Task extracted from conversation”  
+
+These help with debugging and timeline clarity.
+
+---
+
+## 7. **Activity Logger API**  
+### Endpoints  
+- `POST /activity` — create any activity  
+- `GET /activity?date=YYYY-MM-DD` — fetch daily activities  
+- `GET /activity/:id` — fetch one  
+- `DELETE /activity/:id` — remove  
+
+### Validation  
+- Ensure `type` is valid  
+- Ensure `content.text` exists  
+- Auto‑inject timestamp and user_id  
+
+---
+
+## 8. **Storage Integration**  
+Activities go into the **Processed Data Store**:
+
+Collection: `activities`
+
+Indexes:  
+- `user_id + timestamp`  
+- `type`  
+- `content.text` (full‑text)  
+
+This makes timeline queries fast.
+
+---
+
+## 9. **Timeline Integration**  
+Once logged, activities appear alongside audio transcripts in the timeline.
+
+Example timeline entry:
+
+```json
+{
+  "timestamp": "2026-06-26T14:00:00Z",
+  "summary": "Team sync",
+  "type": "calendar"
+}
+```
+
+---
+
+# 🧱 Implementation Blueprint (MVP)
+
+### Frontend  
+- “Add Note” screen  
+- “Add Task” screen  
+- Calendar sync toggle  
+- Activity list view  
+
+### Backend  
+- Activity model  
+- Activity controller  
+- Calendar sync job  
+- Validation + normalization  
+
+### Database  
+- `activities` collection/table  
+- Indexes for search + timeline
