@@ -1,0 +1,177 @@
+PATDS
+
+# 🟦 Component #8 — Processed Data Store  
+This is where PATDS finally is *queryable, intelligent, and fast*. The **Processed Data Store** holds everything that has been enriched, structured, and made meaningful by the pipeline — summaries, actions, entities, topics, diarized segments, documents, and more. It is the **central knowledge base** of the entire system.
+
+- The timeline  
+- Search  
+- Tasks  
+- Insights  
+- Reports  
+- Document history  
+- Knowledge graph  
+
+It must be **fast**, **indexed**, **flexible**, and **optimized for retrieval**.
+
+---
+
+# 🧩 Subcomponents
+
+## 1. **Processed Transcript Storage**  
+This stores the *final* transcript after:
+
+- ASR  
+- Diarization  
+- NLP enrichment  
+
+### Example record  
+```json
+{
+  "processed_id": "uuid",
+  "audio_id": "uuid",
+  "user_id": "uuid",
+  "created_at": "2026-06-26T18:43:00Z",
+  "segments": [
+    {
+      "speaker": "S1",
+      "start": 0.0,
+      "end": 4.2,
+      "text": "Hey, remind me to send the proposal tomorrow."
+    }
+  ],
+  "summary": "Discussed sending the proposal and scheduling a meeting.",
+  "actions": [...],
+  "entities": [...],
+  "topics": ["work", "planning"],
+  "sentiment": "neutral"
+}
+```
+
+---
+
+## 2. **Processed Activity Storage**  
+This stores enriched versions of:
+
+- Notes  
+- Calendar events  
+- Tasks  
+- System events  
+
+### Example  
+```json
+{
+  "activity_id": "uuid",
+  "type": "note",
+  "timestamp": "2026-06-26T18:20:00Z",
+  "summary": "Reminder to send proposal",
+  "topics": ["work"],
+  "entities": ["proposal"],
+  "raw_text": "Remember to send the proposal"
+}
+```
+
+---
+
+## 3. **Document Storage**  
+Stores rendered documents from Component #6.
+
+### Example  
+```json
+{
+  "document_id": "uuid",
+  "type": "daily_summary",
+  "rendered_markdown": "# Daily Summary...",
+  "data": {
+    "summary": "...",
+    "actions": [...],
+    "topics": [...]
+  }
+}
+```
+
+---
+
+## 4. **Task Store**  
+Tasks extracted by NLP or manually created.
+
+### Example  
+```json
+{
+  "task_id": "uuid",
+  "description": "Send the proposal",
+  "due": "2026-06-27",
+  "source": "transcript:uuid",
+  "status": "open"
+}
+```
+
+---
+
+## 5. **Knowledge Graph Layer (Optional)**  
+Nodes:  
+- People  
+- Topics  
+- Activities  
+- Documents  
+- Tasks  
+
+Edges:  
+- “mentioned in”  
+- “related to”  
+- “follows from”  
+- “assigned to”  
+
+This powers deep insights later.
+
+---
+
+## 6. **Indexes**  
+### Required indexes  
+- `user_id + timestamp`  
+- `topics`  
+- `entities.value`  
+- `actions.description`  
+- `document.type + date`  
+
+### Why?  
+Fast timeline queries, fast search, fast filtering.
+
+---
+
+## 7. **Storage Technology Choices**  
+### Best options  
+- **MongoDB** — flexible, fast, ideal for JSON  
+- **Firestore** — simple, scalable  
+- **PostgreSQL + JSONB** — if you want relational + document hybrid  
+
+### Recommended  
+MongoDB for maximum flexibility.
+
+---
+
+## 8. **Processed Data API**  
+### Endpoints  
+- `GET /transcript/processed/:id`  
+- `GET /activities/processed?date=YYYY-MM-DD`  
+- `GET /documents?type=daily_summary`  
+- `GET /tasks?status=open`  
+
+---
+
+# 🧱 Implementation Blueprint (MVP)
+
+### Backend  
+- Processed data service  
+- Write operations triggered by NLP + Document Generator  
+- Read operations for timeline, search, insights  
+
+### Database  
+- `processed_transcripts`  
+- `processed_activities`  
+- `documents`  
+- `tasks`  
+
+### DevOps  
+- Backups  
+- Index monitoring  
+- Storage scaling
