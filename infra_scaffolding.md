@@ -1,0 +1,13 @@
+infra/
+  k8s/
+    api-deployment.yaml
+    workers-deployment.yaml
+    mongo-statefulset.yaml
+    elasticsearch.yaml
+    vector-db.yaml
+  terraform/
+  ci-cd/
+    github-actions/
+      backend.yml
+      web.yml
+      mobile.yml
