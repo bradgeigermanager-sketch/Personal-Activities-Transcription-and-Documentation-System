@@ -1,0 +1,30 @@
+frontend-web/
+  src/
+    pages/
+      index.tsx          # timeline
+      search.tsx
+      documents.tsx
+      tasks.tsx
+      insights.tsx
+      settings.tsx
+      login.tsx
+    components/
+      Timeline/
+      Search/
+      Documents/
+      Tasks/
+      Insights/
+      Layout/
+      Auth/
+    lib/
+      apiClient.ts
+      auth.ts
+      hooks/
+        useTimeline.ts
+        useSearch.ts
+        useTasks.ts
+        useDocuments.ts
+        useInsights.ts
+    styles/
+  package.json
+  next.config.js
