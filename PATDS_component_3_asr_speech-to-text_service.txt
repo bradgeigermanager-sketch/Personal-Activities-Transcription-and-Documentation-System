@@ -1,0 +1,152 @@
+PATDS 
+
+# 🟦 Component #3 — ASR (Speech‑to‑Text) Service  
+This is the core engine that transforms raw audio into text your system can analyze, summarize, and store. It must be **accurate**, **fast**, and **modular** so you can swap models later.
+
+---
+
+## 🎯 Purpose  
+Convert uploaded audio into a **timestamped transcript** and hand it off to the next processing stages (diarization → NLP → storage).
+
+---
+
+# 🧩 Subcomponents
+
+## 1. **ASR Model Engine**  
+You need a model that balances accuracy, speed, and privacy.
+
+### Recommended options  
+- **Local/Server:** Whisper (medium or large for accuracy, small for speed)  
+- **Cloud:** Azure Speech Service (fast, scalable, multilingual)  
+
+### MVP choice  
+Whisper‑small or Whisper‑medium running on your backend.
+
+---
+
+## 2. **Audio Preprocessing**  
+Before feeding audio to the model:
+
+- Normalize sample rate to **16 kHz**  
+- Convert to **mono**  
+- Ensure consistent format (`wav` or `m4a`)  
+- Optional: noise reduction  
+
+This ensures predictable model performance.
+
+---
+
+## 3. **ASR Processing Pipeline**  
+### Steps  
+1. Receive `audio_id` from upload service  
+2. Fetch audio from storage  
+3. Preprocess audio  
+4. Run ASR model  
+5. Produce transcript with timestamps  
+6. Save transcript to raw data store  
+7. Emit event: `"transcript_ready"` for downstream services  
+
+### Example output  
+```json
+{
+  "audio_id": "uuid",
+  "transcript": [
+    {
+      "start": 0.0,
+      "end": 4.2,
+      "text": "Hey, remind me to send the proposal tomorrow."
+    },
+    {
+      "start": 4.2,
+      "end": 7.8,
+      "text": "Also, schedule a meeting with Alex next week."
+    }
+  ]
+}
+```
+
+---
+
+## 4. **ASR API**  
+### Endpoint  
+`POST /asr/process`
+
+### Payload  
+```json
+{
+  "audio_id": "uuid"
+}
+```
+
+### Response  
+```json
+{
+  "status": "processing_started",
+  "audio_id": "uuid"
+}
+```
+
+ASR runs asynchronously so the user isn’t waiting.
+
+---
+
+## 5. **ASR Worker Service**  
+A background worker handles heavy lifting.
+
+### Responsibilities  
+- Pull jobs from queue  
+- Run Whisper or cloud ASR  
+- Save transcript  
+- Trigger next pipeline stage  
+
+### Queue options  
+- Redis Queue  
+- RabbitMQ  
+- SQS  
+
+---
+
+## 6. **Raw Transcript Storage**  
+Stored in the **Raw Data Store** as:
+
+```json
+{
+  "transcript_id": "uuid",
+  "audio_id": "uuid",
+  "user_id": "uuid",
+  "created_at": "2026-06-26T18:40:00Z",
+  "segments": [...],
+  "model": "whisper-medium"
+}
+```
+
+---
+
+## 7. **Integration with Next Components**  
+Once ASR finishes, it triggers:
+
+- Speaker diarization  
+- NLP enrichment  
+- Timeline update  
+- Task extraction  
+
+This is the first major branching point in the pipeline.
+
+---
+
+# 🧱 Implementation Blueprint (MVP)
+
+### Backend  
+- FastAPI or Node service  
+- Whisper running via Python or C++  
+- Async job queue  
+- Transcript storage  
+
+### DevOps  
+- GPU optional but recommended  
+- Autoscaling for cloud ASR  
+
+### Testing  
+- Test with noisy audio  
+- Test with long recordings  
+- Test multilingual input
