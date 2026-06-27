@@ -1,0 +1,174 @@
+PATDS
+
+# 🟦 Component #15 — Web App  
+The **Web App** is the second major module of the Interface Layer, and it’s where PATDS becomes *powerful*. While the mobile app is for capturing and quick review, the web app is for **deep search, editing, analysis, and long‑form reflection**. This is the “command center” of your personal data system.
+The PATDS Web App is designed for **power users**: people who want to search deeply, edit documents, analyze trends, and manage their personal knowledge base with precision.
+
+It’s the desktop‑grade interface for everything your system knows.
+
+---
+
+# 🧩 Subcomponents
+
+## 1. **Web App Architecture**  
+### Recommended stack  
+- **Frontend:** React, Next.js, or SvelteKit  
+- **UI Framework:** Tailwind, Chakra, or Material UI  
+- **State:** React Query / SWR  
+- **Auth:** OAuth or JWT  
+- **Build:** SPA or hybrid SSR  
+
+### Core modules  
+- Timeline  
+- Search  
+- Documents  
+- Tasks  
+- Insights  
+- Settings  
+
+---
+
+## 2. **Timeline Dashboard**  
+This is the “home page” of the web app.
+
+### Features  
+- Multi‑day timeline view  
+- Infinite scroll  
+- Hover previews  
+- Expandable transcript cards  
+- Inline audio playback  
+- Filters (type, topic, person, date)  
+
+### Power features  
+- Jump to any date  
+- Compare two days  
+- Merge multiple transcripts into a single view  
+
+---
+
+## 3. **Advanced Search Interface**  
+Connects to Component #13.
+
+### Features  
+- Search bar with autocomplete  
+- Natural‑language queries  
+- Filters:  
+  - Type  
+  - Topic  
+  - Entity  
+  - Date range  
+- Semantic result previews  
+- Highlighted matches  
+- Jump‑to‑timeline integration  
+
+### Power features  
+- Saved searches  
+- Search history  
+- “Explain this result” (why it matched)  
+
+---
+
+## 4. **Document Workspace**  
+This is where users read, edit, and export their summaries and reports.
+
+### Features  
+- Markdown/HTML viewer  
+- Rich‑text editor  
+- Version history  
+- Compare versions  
+- Link back to source transcripts  
+- Export (PDF, Markdown, etc.)  
+
+### Power features  
+- Multi‑document workspace  
+- AI rewrite suggestions  
+- Document tagging  
+
+---
+
+## 5. **Task Console**  
+A full productivity dashboard.
+
+### Features  
+- Task list  
+- Filters (open, done, overdue)  
+- Due‑date calendar  
+- Task detail panel  
+- Link to source transcript  
+
+### Power features  
+- Kanban board  
+- Bulk editing  
+- Smart grouping (by topic, project, person)  
+
+---
+
+## 6. **Insights Dashboard**  
+Connects to Component #13.
+
+### Features  
+- Topic trends  
+- People insights  
+- Task analytics  
+- Sentiment charts  
+- Time‑use graphs  
+
+### Power features  
+- Custom insight widgets  
+- Compare two time periods  
+- “Explain this trend” (AI‑generated)  
+
+---
+
+## 7. **Audio & Transcript Viewer**  
+A dedicated interface for deep transcript review.
+
+### Features  
+- Audio waveform  
+- Speaker‑colored segments  
+- Click‑to‑jump playback  
+- Inline editing of transcript text  
+- Entity highlighting  
+- Topic highlighting  
+
+### Power features  
+- Multi‑speaker filtering  
+- Export transcript  
+- Annotate segments  
+
+---
+
+## 8. **Settings & Privacy Panel**  
+### Features  
+- Data retention settings  
+- Export your data  
+- Delete account  
+- Model preferences (local vs cloud)  
+- Notification settings  
+
+---
+
+# 🧱 Implementation Blueprint (MVP)
+
+### Screens  
+- Timeline  
+- Search  
+- Documents  
+- Tasks  
+- Insights  
+- Settings  
+
+### Components  
+- Timeline card  
+- Transcript viewer  
+- Document editor  
+- Task list  
+- Search bar  
+- Insight charts  
+
+### API integration  
+- Timeline API  
+- Search API  
+- Document API  
+- Task API  
+- Insights API
