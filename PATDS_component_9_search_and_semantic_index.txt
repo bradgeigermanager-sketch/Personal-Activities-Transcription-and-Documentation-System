@@ -1,0 +1,171 @@
+PATDS
+
+# 🟦 Component #9 — Search + Semantic Index
+This is one of the **most powerful and transformative components** in PATDS. It is *instantly searchable*, *context‑aware*, and capable of answering natural‑language questions like:
+
+- “What did I talk about with Alex last week”  
+- “Show me all tasks related to travel”  
+- “Find conversations where I sounded stressed”  
+- “Summaries of all meetings about budget planning”  
+
+This is the backbone of your **insights**, **timeline**, **reports**, and **knowledge retrieval**.
+
+This component gives PATDS **two complementary search systems**:
+
+1. **Keyword Search** — fast, exact, filterable  
+2. **Semantic Search** — meaning‑based, natural‑language, context‑aware  
+
+Together, they create a **hybrid search engine** that feels like querying your own memory.
+
+---
+
+# 🧩 Subcomponents
+
+## 1. **Full‑Text Index**  
+This handles traditional keyword search.
+
+### What gets indexed  
+- Transcript text  
+- Summaries  
+- Notes  
+- Document text  
+- Task descriptions  
+- Entities  
+- Topics  
+
+### Why it matters  
+- Fast filtering  
+- Exact phrase matching  
+- Timeline queries  
+- “Find all mentions of ‘proposal’”  
+
+### Recommended engines  
+- Elasticsearch  
+- OpenSearch  
+- PostgreSQL full‑text (if using SQL)
+
+---
+
+## 2. **Vector (Semantic) Index**  
+This is where the magic happens.
+
+### How it works  
+- Every transcript segment, summary, note, and document is converted into an **embedding vector**.  
+- These vectors are stored in a vector database.  
+- Queries are also converted into vectors.  
+- The system finds the closest matches by meaning, not words.
+
+### Example  
+User query:  
+> “What did I say about planning next week”
+
+Semantic search returns:  
+- “Schedule meeting with Alex next week”  
+- “Plan tasks for Monday”  
+- “Next week’s deadlines”  
+
+Even if the phrase “planning next week” never appears.
+
+### Recommended engines  
+- Weaviate  
+- Pinecone  
+- Qdrant  
+- Elasticsearch vector index  
+
+---
+
+## 3. **Hybrid Search Engine**  
+Combines keyword + semantic results.
+
+### Why hybrid  
+- Keyword search is precise  
+- Semantic search is flexible  
+- Together: best of both worlds  
+
+### Ranking strategy  
+1. Semantic similarity score  
+2. Keyword match score  
+3. Recency boost  
+4. Topic/entity relevance  
+
+---
+
+## 4. **Search API**  
+### Endpoint  
+`GET /search?q=...`
+
+### Response  
+```json
+{
+  "query": "meeting with Alex",
+  "results": [
+    {
+      "type": "transcript_segment",
+      "score": 0.92,
+      "text": "Let's schedule a meeting with Alex next week.",
+      "timestamp": "2026-06-26T14:00:00Z"
+    }
+  ]
+}
+```
+
+### Filters  
+- `type=transcript|note|task|document`  
+- `date=YYYY-MM-DD`  
+- `topic=work`  
+- `entity=Alex`  
+
+---
+
+## 5. **Indexing Pipeline**  
+Triggered whenever new processed data arrives.
+
+### Steps  
+1. Receive `"nlp_complete"` or `"document_ready"` event  
+2. Extract text fields  
+3. Generate embeddings  
+4. Write to vector index  
+5. Write to keyword index  
+6. Update metadata  
+
+---
+
+## 6. **Query Understanding Layer**  
+Optional but powerful.
+
+### Features  
+- Expand synonyms (“meeting” → “call”, “sync”)  
+- Detect intent (“tasks due tomorrow”)  
+- Extract filters from natural language  
+- Rewrite queries for better retrieval  
+
+---
+
+## 7. **UI Integration**  
+### MVP  
+- Search bar  
+- Results list  
+- Filters sidebar  
+
+### Later  
+- “Ask a question” conversational search  
+- Highlight matched text  
+- Jump to transcript moment  
+
+---
+
+# 🧱 Implementation Blueprint (MVP)
+
+### Backend  
+- Search service  
+- Embedding generator  
+- Hybrid ranking logic  
+
+### Databases  
+- Full‑text index (Elasticsearch/OpenSearch)  
+- Vector index (Weaviate/Pinecone/Qdrant)  
+
+### Frontend  
+- Search UI  
+- Filters  
+- Result previews
