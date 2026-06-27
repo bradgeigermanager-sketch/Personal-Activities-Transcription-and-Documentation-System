@@ -1,0 +1,151 @@
+PATDS
+
+# 🟦 Component #7 — Raw Data Store  
+The Raw Data Store is the **source of truth** for everything captured before processing. It must be:
+
+- Durable  
+- Immutable  
+- Timestamped  
+- Easy to retrieve  
+- Secure  
+
+It stores **exactly what the user said or did**, untouched.
+
+---
+
+# 🧩 Subcomponents
+
+## 1. **Audio Storage**  
+This is where all uploaded audio lives.
+
+### Requirements  
+- Object storage (cloud or local)  
+- Immutable (never overwritten)  
+- Encrypted at rest  
+- Versioned (optional)  
+
+### Recommended formats  
+- `.wav` (best for ASR)  
+- `.m4a` (smaller, good for mobile)  
+
+### Example stored object  
+```
+/audio/user_123/2026/06/26/audio_abc123.m4a
+```
+
+---
+
+## 2. **Raw Transcript Storage**  
+This stores the **output of ASR before diarization or NLP**.
+
+### Requirements  
+- JSON document store  
+- Linked to audio via `audio_id`  
+- Includes timestamps and model metadata  
+
+### Example record  
+```json
+{
+  "transcript_id": "uuid",
+  "audio_id": "uuid",
+  "user_id": "uuid",
+  "created_at": "2026-06-26T18:42:00Z",
+  "segments": [
+    { "start": 0.0, "end": 4.2, "text": "Hey, remind me to send the proposal tomorrow." }
+  ],
+  "model": "whisper-medium"
+}
+```
+
+---
+
+## 3. **Metadata Index**  
+Metadata is essential for fast retrieval and timeline building.
+
+### Stored metadata  
+- Duration  
+- Device  
+- File size  
+- Language  
+- Upload timestamp  
+- Processing status  
+
+### Example  
+```json
+{
+  "audio_id": "uuid",
+  "duration": 42,
+  "language": "en",
+  "status": "asr_complete"
+}
+```
+
+---
+
+## 4. **Raw Activity Storage**  
+This stores **unprocessed** activity logs (notes, calendar events, tasks).
+
+### Requirements  
+- Same schema as Activity Logger  
+- Immutable  
+- Timestamped  
+
+---
+
+## 5. **Storage Technology Choices**  
+### Audio  
+- S3  
+- MinIO  
+- Azure Blob  
+
+### Raw transcripts & metadata  
+- MongoDB  
+- Firestore  
+- DynamoDB  
+
+### Why NoSQL?  
+- Flexible schema  
+- Fast writes  
+- Easy to scale  
+
+---
+
+## 6. **Data Lifecycle Policies**  
+### MVP  
+- Keep everything forever  
+
+### Advanced  
+- Auto‑delete raw audio after X days  
+- Archive old transcripts  
+- User‑controlled retention  
+
+---
+
+## 7. **Raw Data API**  
+### Endpoints  
+- `GET /audio/:id`  
+- `GET /transcript/raw/:id`  
+- `GET /activity/raw/:id`  
+
+### Permissions  
+- User must own the data  
+- No public access  
+
+---
+
+# 🧱 Implementation Blueprint (MVP)
+
+### Backend  
+- Storage service module  
+- Metadata writer  
+- Retrieval endpoints  
+
+### Database  
+- `raw_transcripts`  
+- `raw_activities`  
+- `audio_metadata`  
+
+### DevOps  
+- Bucket policies  
+- Encryption keys  
+- Backup schedule
