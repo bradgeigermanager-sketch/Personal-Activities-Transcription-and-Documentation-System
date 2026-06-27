@@ -1,0 +1,165 @@
+PATDS
+
+# 🟦 Component #16 — Voice Interface  
+This is the **final module of the Interface Layer**, and it’s the feature that makes PATDS feel *alive*. The Voice Interface lets you **control**, **query**, and **capture** information hands‑free — turning PATDS into a true personal assistant you can talk to naturally.
+The Voice Interface is the **real‑time conversational layer** of PATDS. It allows users to:
+
+- Start recordings  
+- Ask questions  
+- Trigger summaries  
+- Create tasks  
+- Search their memory  
+- Navigate the system  
+- Request insights  
+
+All through natural speech.
+
+---
+
+# 🧩 Subcomponents
+
+## 1. **Wake Word / Activation**  
+### Options  
+- Tap‑to‑talk (MVP)  
+- Hold‑to‑talk  
+- Wake word (“Hey PATDS”) — advanced  
+
+### MVP recommendation  
+Start with **tap‑to‑talk** to avoid complexity and battery drain.
+
+---
+
+## 2. **Real‑Time ASR Stream**  
+This is separate from the long‑form ASR pipeline.
+
+### Requirements  
+- Low latency  
+- Partial transcripts  
+- Endpoint detection (when user stops talking)  
+
+### Output example  
+```
+User: “Create a task to email Alex tomorrow.”
+→ Intent: create_task
+→ Data: { description: "email Alex", due: "tomorrow" }
+```
+
+---
+
+## 3. **Voice Command Interpreter**  
+This is the brain of the Voice Interface.
+
+### Responsibilities  
+- Detect intent  
+- Extract entities  
+- Route to correct service  
+
+### Supported intents (MVP)  
+- **Start recording**  
+- **Stop recording**  
+- **Create task**  
+- **Search memory**  
+- **Summarize today**  
+- **Open timeline**  
+- **Open tasks**  
+- **Add note**  
+
+### Example  
+User says:  
+> “What did I talk about with Alex last week”
+
+Interpreter produces:  
+```json
+{
+  "intent": "search",
+  "filters": {
+    "entity": "Alex",
+    "date_range": "last_week"
+  }
+}
+```
+
+---
+
+## 4. **Conversational Query Engine**  
+Connects directly to the Search & Insights Service.
+
+### Capabilities  
+- Natural‑language search  
+- Follow‑up questions  
+- Context retention  
+- Clarification prompts  
+
+### Example  
+User: “Show me tasks from that conversation.”  
+Engine knows “that conversation” refers to the previous query result.
+
+---
+
+## 5. **Voice Response Generator**  
+### Output formats  
+- Spoken response  
+- On‑screen card  
+- Link to timeline entry  
+- Link to document  
+
+### Example  
+> “You talked with Alex twice last week. The main topics were planning and deadlines.”
+
+---
+
+## 6. **Audio Playback Controls**  
+### Commands  
+- “Play the last recording”  
+- “Skip ahead 10 seconds”  
+- “Slow down”  
+- “Jump to the part where I mentioned the proposal”  
+
+---
+
+## 7. **Mobile Integration**  
+### Features  
+- Floating voice button  
+- Background mode  
+- Offline fallback  
+- Haptic feedback  
+
+---
+
+## 8. **Web Integration**  
+### Features  
+- Microphone permission handling  
+- Push‑to‑talk button  
+- Voice search bar  
+
+---
+
+## 9. **Voice UI Components**  
+### Elements  
+- Listening indicator  
+- Waveform animation  
+- Transcription preview  
+- Response bubble  
+- Action cards  
+
+---
+
+# 🧱 Implementation Blueprint (MVP)
+
+### Frontend  
+- Microphone capture  
+- Push‑to‑talk button  
+- Real‑time transcript display  
+- Response UI  
+
+### Backend  
+- Real‑time ASR endpoint  
+- Intent detection  
+- Query routing  
+- Response generation  
+
+### Integration  
+- Task API  
+- Search API  
+- Timeline API  
+- Document API
