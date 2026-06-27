@@ -1,0 +1,175 @@
+PATDS
+
+# 🟦 Component #18 — Encryption & Redaction  
+This is the **final module of the Security Layer** and the **final component of the entire PATDS architecture**. Everything — from audio capture to insights — ultimately depends on this layer to keep user data *private, secure, and under the user’s control*.
+
+Encryption & Redaction is what makes PATDS trustworthy. It ensures that even if someone gained access to the infrastructure, the data would remain unreadable and protected.
+
+---
+
+# 🧩 Subcomponents
+
+## 1. **Data‑at‑Rest Encryption**  
+All stored data must be encrypted.
+
+### What gets encrypted  
+- Audio files  
+- Raw transcripts  
+- Processed transcripts  
+- Documents  
+- Tasks  
+- Insights  
+- Metadata  
+
+### Recommended  
+- AES‑256 for storage encryption  
+- Cloud provider KMS (AWS KMS, Azure Key Vault, GCP KMS)  
+- Key rotation every 90 days  
+
+---
+
+## 2. **Data‑in‑Transit Encryption**  
+All communication between:
+
+- Mobile app ↔ backend  
+- Web app ↔ backend  
+- Services ↔ services  
+- Workers ↔ storage  
+
+must use **TLS 1.2+**.
+
+### Requirements  
+- HSTS  
+- Certificate pinning (mobile)  
+- No plaintext endpoints  
+
+---
+
+## 3. **Local Device Encryption**  
+### Mobile  
+- Secure enclave / Keychain (iOS)  
+- Keystore (Android)  
+- Encrypt cached data  
+
+### Web  
+- IndexedDB encryption (if caching)  
+- Secure cookies only  
+
+---
+
+## 4. **Field‑Level Encryption**  
+Some fields require extra protection.
+
+### Examples  
+- Names of people mentioned  
+- Sensitive topics  
+- Free‑text notes  
+- Sentiment data  
+
+Encrypt these fields individually so even DB admins can’t read them.
+
+---
+
+## 5. **Redaction Engine**  
+This is crucial for privacy.
+
+### Responsibilities  
+- Remove sensitive entities  
+- Mask PII  
+- Obfuscate names  
+- Redact audio segments (optional)  
+
+### Example  
+Original:  
+> “I talked to Dr. Smith about my medication.”
+
+Redacted:  
+> “I talked to [PERSON] about my [MEDICAL_INFO].”
+
+---
+
+## 6. **User‑Controlled Redaction Rules**  
+Users can define what should be hidden.
+
+### Examples  
+- “Redact all names except Alex.”  
+- “Hide all health‑related content.”  
+- “Mask financial information.”  
+
+Stored in user settings.
+
+---
+
+## 7. **Ephemeral Mode**  
+A privacy‑first mode where:
+
+- Audio is processed but not stored  
+- Transcripts are not saved  
+- No documents generated  
+- No insights stored  
+
+Useful for sensitive conversations.
+
+---
+
+## 8. **Secure Deletion**  
+When a user deletes something, it must be **irrecoverable**.
+
+### Requirements  
+- Delete encryption keys  
+- Remove from vector index  
+- Remove from full‑text index  
+- Remove from raw + processed stores  
+- Remove cached versions  
+
+---
+
+## 9. **Key Management**  
+### Requirements  
+- Keys stored in KMS  
+- Never stored in code  
+- Automatic rotation  
+- Audit logs for key access  
+
+---
+
+## 10. **Compliance Layer**  
+Depending on user needs:
+
+- GDPR  
+- CCPA  
+- HIPAA (if medical data is involved)  
+
+### Features  
+- Right to delete  
+- Right to export  
+- Consent tracking  
+
+---
+
+# 🧱 Implementation Blueprint (MVP)
+
+### Backend  
+- Encryption middleware  
+- Redaction engine  
+- Key management integration  
+
+### Mobile  
+- Secure local storage  
+- Biometric unlock  
+- Encrypted offline queue  
+
+### Web  
+- Secure cookies  
+- Encrypted local cache (optional)  
+
+
+🟩 Look in the other documents for:
+
+- **System integration plan**  
+- **MVP build roadmap**  
+- **Full architecture diagram**  
+- **Code scaffolding**  
+- **Deployment plan**  
+
+Which direction do you want to go next?
